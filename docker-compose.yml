@@ -3,13 +3,13 @@ services:
     php-unit:
         build: .
         container_name: php-unit
-        image: littleof/php-unit:7.4
-        env_file: .env
+        image: littleof/centos-php-unit:latest
+        env_file: .unitd.env
         volumes:
             - ./src/:/app-src/
             - ./entrypoint.d/:/entrypoint.d/
         ports:
-            - '8080:8080'
+            - '9580:9580'
         restart: always
         networks:
             - app_net

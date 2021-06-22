@@ -1,5 +1,6 @@
-FROM centos:8
-
+FROM centos:latest
+#设置时区
+RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shanghai' >/etc/timezone
 # 初始化镜像
 RUN rpmkeys --import file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial && \
     INSTALL_PKGS="bsdtar \
@@ -50,17 +51,18 @@ RUN rpmkeys --import file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial && \
     rm -rf /var/cache/yum/* && \
     yum repolist && \
     yum -y clean all --enablerepo='*'
-
 #此镜像提供了一个PHP环境，可用于运行PHP 应用程序。
-EXPOSE 8080 \
+EXPOSE 80 \
+    443 \
+    8080 \
     8443 \
     9443 \
-    9501
-
+    9501 \
+    9580
 ENV NAME=php \
     APP_ROOT=/app-src \
     PHP_VERSION=8.0 \
-    UNIT_VERSION=1.23.0 \
+    UNIT_VERSION=1.24.0 \
     PHP_VER_SHORT=80 \
     PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin:${APP_ROOT}:${APP_ROOT}/bin \
     SUMMARY="Platform for building and running PHP ${PHP_VERSION} applications" \
@@ -71,7 +73,6 @@ ENV NAME=php \
     for several commercial and non-commercial database management systems, so writing \
     a database-enabled webpage with PHP is fairly simple. The most common use of PHP coding \
     is probably as a replacement for CGI scripts."
-
 LABEL summary="$SUMMARY" \
     name="littleof/${NAME}-${PHP_VER_SHORT}-unit" \
     version="${PHP_VERSION}" \
