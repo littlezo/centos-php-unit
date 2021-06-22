@@ -1,9 +1,10 @@
 version: '3'
 services:
   php-unit:
-    build: .
-    container_name: php-unit
-    image: littleof/centos-php-unit:latest
+    build:
+      context: .
+      dockerfile: Dockerfile-php-7
+    image: littleof/centos-php-unit:7
     env_file: .unitd.env
     volumes:
       - ./src/:/app-src/
